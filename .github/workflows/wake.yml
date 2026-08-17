@@ -1,0 +1,22 @@
+name: Wake Hermes Sprite
+
+# GitHub's ONLY job: wake the Hermes sprite at 08:50 Turkey time (05:50 UTC)
+# so the primod-daily-intel Hermes cron (06:00 UTC = 09:00 Turkey) fires.
+# All intel collection, briefing, and delivery happens inside Hermes cron —
+# this repo does nothing but ping the sprite URL.
+
+on:
+  schedule:
+    # 05:50 UTC = 08:50 Turkey (UTC+3)
+    - cron: '50 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping sprite URL to wake it
+        run: |
+          curl -fsS -o /dev/null -m 30 \
+            https://hermes-agent-btb7p.sprites.app/ \
+            || echo "wake-ping-sent (sprite may not respond to plain GET — that's fine, the request still wakes it)"
