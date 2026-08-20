@@ -1,14 +1,15 @@
 name: Wake Hermes Sprite
 
-# GitHub's ONLY job: wake the Hermes sprite at 08:50 Turkey time (05:50 UTC)
-# so the primod-daily-intel Hermes cron (06:00 UTC = 09:00 Turkey) fires.
+# GitHub's ONLY job: wake the Hermes sprite every 6 hours
+# (05:50/11:50/17:50/23:50 UTC). Keep 05:50 because the
+# primod-daily-intel Hermes cron at 06:00 UTC needs the sprite awake.
 # All intel collection, briefing, and delivery happens inside Hermes cron —
 # this repo does nothing but ping the sprite URL.
 
 on:
   schedule:
-    # 05:50 UTC = 08:50 Turkey (UTC+3)
-    - cron: '50 5 * * *'
+    # Every 6 hours at 05:50/11:50/17:50/23:50 UTC
+    - cron: '50 5,11,17,23 * * *'
   workflow_dispatch:
 
 jobs:
